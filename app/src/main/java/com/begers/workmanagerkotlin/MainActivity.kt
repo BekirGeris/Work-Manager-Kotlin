@@ -2,6 +2,7 @@ package com.begers.workmanagerkotlin
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.lifecycle.Observer
 import androidx.work.*
 import java.util.concurrent.TimeUnit
 
@@ -36,6 +37,18 @@ class MainActivity : AppCompatActivity() {
 
         WorkManager.getInstance(this).enqueue(workRequest)
 
+        WorkManager.getInstance(this).getWorkInfoByIdLiveData(workRequest.id).observe(this, Observer {
+            if (it.state == WorkInfo.State.RUNNING){
+                println("RUNNING")
+            }else if (it.state == WorkInfo.State.FAILED){
+                println("FAILED")
+            }else if (it.state == WorkInfo.State.SUCCEEDED){
+                println("SUCCEEDED")
+            }
+        })
+
+        //şin iptal edilmesi
+        //WorkManager.getInstance(this).cancelAllWork()
 
 
     }
