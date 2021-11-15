@@ -18,10 +18,20 @@ class MainActivity : AppCompatActivity() {
             .setRequiresCharging(false)
             .build()
 
+        /*bir kez yapılan işlemler
         val workRequest : WorkRequest = OneTimeWorkRequestBuilder<RefreshDatabase>()
             .setConstraints(constraints)
             .setInputData(data)
             //.setInitialDelay(5, TimeUnit.HOURS)
+            .build()
+
+        WorkManager.getInstance(this).enqueue(workRequest)
+        */
+
+        //periyodik olraka yapılan işlemler
+        val workRequest: PeriodicWorkRequest = PeriodicWorkRequestBuilder<RefreshDatabase>(15, TimeUnit.MINUTES)
+            .setConstraints(constraints)
+            .setInputData(data)
             .build()
 
         WorkManager.getInstance(this).enqueue(workRequest)
